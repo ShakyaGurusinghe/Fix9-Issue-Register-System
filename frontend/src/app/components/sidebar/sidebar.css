@@ -1,0 +1,31 @@
+.sidebar {
+    width: 280px;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.nav-link {
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    background-color: #178ca4 !important;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        top: 0;
+        bottom: 0;
+    }
+
+    .sidebar.open {
+        left: 0;
+    }
+}

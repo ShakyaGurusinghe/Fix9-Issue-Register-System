@@ -1,0 +1,58 @@
+/* =============================================
+   LAYOUT WRAPPER
+   ============================================= */
+.layout-wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f0f2f5;
+}
+
+/* =============================================
+   MAIN CONTENT AREA
+   ============================================= */
+.layout-main {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+}
+
+.layout-content {
+    overflow-y: auto;
+}
+
+/* =============================================
+   MOBILE TOPBAR
+   ============================================= */
+.topbar {
+    background-color: #0a1128;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* =============================================
+   MOBILE BACKDROP (dims page when sidebar open)
+   ============================================= */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar-backdrop {
+        display: block;
+        pointer-events: none;
+    }
+
+    .sidebar-backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
