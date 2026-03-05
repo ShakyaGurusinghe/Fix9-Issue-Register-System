@@ -17,16 +17,27 @@ export class AuthService {
     }
   }
 
+  // ── Normalise backend user (uses `image`) → frontend user (uses `profile_photo`) ──
+  private normalise(user: any) {
+    return {
+      ...user,
+      profile_photo: user.image ?? user.profile_photo ?? null,
+    };
+  }
+
   signup(userData: any): Observable<any> {
-    return this.http.post('/api/auth/signup', userData);
+    // Strip confirmPassword before sending to backend
+    const { confirmPassword, ...payload } = userData;
+    return this.http.post('/api/auth/signup', payload);
   }
 
   signin(credentials: any): Observable<any> {
     return this.http.post<any>('/api/auth/signin', credentials).pipe(
       tap(response => {
+        const user = this.normalise(response.user);
         localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        this.currentUserSubject.next(response.user);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
       })
     );
   }
@@ -48,11 +59,18 @@ export class AuthService {
 
   updateProfile(profileData: any): Observable<any> {
     const token = this.getToken();
-    return this.http.put('/api/user/profile', profileData, {
+    // Map profile_photo → image for backend
+    const payload: any = { name: profileData.name };
+    if (profileData.profile_photo !== undefined) {
+      payload.image = profileData.profile_photo;
+    }
+
+    return this.http.put<any>('/api/user/profile', payload, {
       headers: { Authorization: `Bearer ${token}` }
     }).pipe(
-      tap(() => {
-        const user = { ...this.currentUserSubject.value, ...profileData };
+      tap(response => {
+        // Use server-returned user to stay in sync
+        const user = this.normalise(response.user);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);
       })

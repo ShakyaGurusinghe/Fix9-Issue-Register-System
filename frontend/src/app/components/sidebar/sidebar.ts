@@ -12,9 +12,12 @@ import { AuthService } from '../../services/auth.service';
 export class Sidebar {
   @Input() isOpen = false;
 
+  showLogoutModal = false;
+
   constructor(private authService: AuthService) { }
 
-  logout() {
+  confirmLogout() {
+    this.showLogoutModal = false;
     this.authService.logout();
   }
 }

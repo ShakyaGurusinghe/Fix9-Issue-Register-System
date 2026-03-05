@@ -34,9 +34,37 @@
   </ul>
 
   <div class="mt-auto">
-    <button (click)="logout()" class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2 p-3 fw-bold" style="border-radius: 10px;">
+    <button (click)="showLogoutModal = true" class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2 p-3 fw-bold" style="border-radius: 10px;">
       <i class="bi bi-box-arrow-right fs-5"></i>
       <span>Logout</span>
     </button>
   </div>
 </div>
+
+<!-- Logout Confirmation Modal -->
+@if (showLogoutModal) {
+  <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+  <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+        <div class="modal-body p-4 text-center">
+          <div class="mb-3" style="color: #0a1128;">
+            <i class="bi bi-box-arrow-right fs-1"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Are you sure you want to Log Out?</h5>
+          <p class="text-muted mb-4">You will be redirected to the sign-in page.</p>
+          <div class="d-flex gap-3 justify-content-center">
+            <button type="button" class="btn btn-light px-4 py-2 fw-bold"
+              (click)="showLogoutModal = false" style="border-radius: 10px;">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger px-4 py-2 fw-bold"
+              (click)="confirmLogout()" style="border-radius: 10px;">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
