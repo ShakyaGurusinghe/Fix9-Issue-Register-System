@@ -33,7 +33,9 @@
             </div>
           </div>
 
-          <div *ngIf="error" class="alert alert-danger py-2 mb-3">{{ error }}</div>
+          @if (error) {
+            <div class="alert alert-danger py-2 mb-3">{{ error }}</div>
+          }
 
           <button type="submit" class="btn btn-primary w-100 p-3 fw-bold mb-3" style="background-color: #2196F3; border: none; border-radius: 10px;">Sign In</button>
           
