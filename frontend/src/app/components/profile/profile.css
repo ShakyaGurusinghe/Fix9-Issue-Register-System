@@ -1,0 +1,22 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.profile-photo-container {
+    background-color: #f8f9fa;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background-color: #f0f2f5 !important;
+}
+
+@media (max-width: 768px) {
+    .p-lg-5 {
+        padding: 1.5rem !important;
+    }
+}

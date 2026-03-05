@@ -1,0 +1,56 @@
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow-lg overflow-hidden border-0" style="max-width: 1000px; width: 100%; border-radius: 20px;">
+    <div class="row g-0">
+      <!-- Left Side: Form -->
+      <div class="col-md-6 p-5 bg-white d-flex flex-column justify-content-center">
+        <h2 class="fw-bold mb-4">Create an account</h2>
+        
+        <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Name</label>
+            <input type="text" class="form-control p-3" name="name" [(ngModel)]="userData.name" placeholder="Enter Your Name" required>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email" class="form-control p-3" name="email" [(ngModel)]="userData.email" placeholder="Enter Your Email" required>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <div class="input-group">
+              <input [type]="showPassword ? 'text' : 'password'" class="form-control p-3 border-end-0" name="password" [(ngModel)]="userData.password" placeholder="Enter Your Password" required>
+              <span class="input-group-text bg-white border-start-0 cursor-pointer" (click)="showPassword = !showPassword">
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+              </span>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Confirm Password</label>
+            <input type="password" class="form-control p-3" name="confirmPassword" [(ngModel)]="userData.confirmPassword" placeholder="Re - Enter Password" required>
+          </div>
+
+          @if (error) {
+            <div class="alert alert-danger py-2 mb-3">{{ error }}</div>
+          }
+
+          <button type="submit" class="btn btn-primary w-100 p-3 fw-bold mb-3" style="background-color: #2196F3; border: none; border-radius: 10px;">Sign Up</button>
+          
+          <p class="text-center text-muted">Already Have An Account? <a routerLink="/signin" class="text-decoration-none fw-bold" style="color: #2196F3;">Sign In</a></p>
+        </form>
+      </div>
+
+      <!-- Right Side: Image -->
+      <div class="col-md-6 d-none d-md-block">
+        <div class="h-100 w-100" style="background: url('/assets/PM_image3.jpg') center/cover no-repeat; min-height: 500px;">
+          <div class="h-100 w-100 d-flex align-items-center justify-content-center" style="background: rgba(0,0,0,0.2);">
+            <div class="text-white text-center p-4">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

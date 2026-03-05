@@ -1,0 +1,30 @@
+<div class="layout-wrapper">
+
+  <!-- Sidebar -->
+  <app-sidebar [isOpen]="isSidebarOpen" (click)="$event.stopPropagation()"></app-sidebar>
+
+  <!-- Mobile backdrop -->
+  <div
+    class="sidebar-backdrop"
+    [class.active]="isSidebarOpen"
+    (click)="isSidebarOpen = false">
+  </div>
+
+  <!-- Main area -->
+  <div class="layout-main d-flex flex-column">
+
+    <!-- Top navbar (mobile only) -->
+    <nav class="topbar d-flex d-lg-none align-items-center px-3 py-2">
+      <button class="btn text-white me-3" (click)="toggleSidebar()">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+      <span class="fs-5 fw-bold text-white">Fix9</span>
+    </nav>
+
+    <!-- Page content -->
+    <main class="layout-content flex-grow-1 p-4">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>
