@@ -1,1 +1,45 @@
-<p>signin works!</p>
+
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow-lg overflow-hidden border-0" style="max-width: 1250px; width: 100%; min-height: 700px; border-radius: 20px;">
+
+    <div class="row g-0">
+
+      <!-- Left Side: Image -->
+      <div class="col-md-6 d-none d-md-block">
+        <div class="h-100 w-100" style="background: url('/assets/PM_image3.jpg') center/cover no-repeat; min-height: 700px;">
+          <div class="h-100 w-100" style="background: rgba(0,0,0,0.1);"></div>
+        </div>
+      </div>
+
+
+      <!-- Right Side: Form -->
+      <div class="col-md-6 p-5 bg-white d-flex flex-column justify-content-center">
+        <h2 class="fw-bold mb-2">Nice to see you again !</h2>
+        <p class="text-muted mb-4">Welcome Back! Please Sign In To Continue</p>
+        
+        <form (ngSubmit)="onSubmit()" #signinForm="ngForm">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email" class="form-control p-3 bg-light border-0" name="email" [(ngModel)]="credentials.email" placeholder="Enter Your Email" required>
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Password</label>
+            <div class="input-group">
+              <input [type]="showPassword ? 'text' : 'password'" class="form-control p-3 bg-light border-0 border-end-0" name="password" [(ngModel)]="credentials.password" placeholder="Enter Your Password" required>
+              <span class="input-group-text bg-light border-0 cursor-pointer" (click)="showPassword = !showPassword">
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+              </span>
+            </div>
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger py-2 mb-3">{{ error }}</div>
+
+          <button type="submit" class="btn btn-primary w-100 p-3 fw-bold mb-3" style="background-color: #2196F3; border: none; border-radius: 10px;">Sign In</button>
+          
+          <p class="text-center text-muted">Dont have an account? <a routerLink="/signup" class="text-decoration-none fw-bold" style="color: #2196F3;">Sign up now</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

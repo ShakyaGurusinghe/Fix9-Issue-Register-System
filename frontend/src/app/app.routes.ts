@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Layout } from './components/layout/layout';
 import { Dashboard } from './components/dashboard/dashboard';
+import { Signin } from './components/signin/signin';
 
 export const routes: Routes = [
     {
@@ -8,11 +9,10 @@ export const routes: Routes = [
         component: Layout,
         children: [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: Dashboard },
-            // Add new pages here as children, e.g.:
-            // { path: 'projects', component: Projects },
-            // { path: 'issues',   component: Issues   },
-            // { path: 'profile',  component: Profile  },
+            { path: 'dashboard', component: Dashboard }
+
         ],
+
     },
+    { path: 'signin', component: Signin }
 ];
