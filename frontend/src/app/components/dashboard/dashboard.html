@@ -1,1 +1,98 @@
-<p>dashboard works!</p>
+<div class="d-flex vh-100 overflow-hidden">
+
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+    <!-- Mobile Header -->
+    <div class="d-lg-none mb-4 d-flex justify-content-between align-items-center">
+      <button class="btn btn-white shadow-sm">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+      <h4 class="mb-0 fw-bold">Dashboard</h4>
+      <div style="width: 40px;"></div>
+    </div>
+
+    <!-- Welcome Banner -->
+    <div class="card border-0 mb-4 p-4 text-white position-relative overflow-hidden" style="background-color: #178ca4; border-radius: 20px;">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h2 class="fw-bold mb-3">Welcome to Fix9 !</h2>
+          <!-- <button class="btn btn-light text-primary fw-bold px-4 py-2" style="border-radius: 10px;">Create New Project</button> -->
+        </div>
+        <div class="col-md-6 mt-4 mt-md-0">
+          <div class="d-flex flex-wrap gap-3 justify-content-md-end">
+            <div class="stat-card p-3 bg-white bg-opacity-10 text-center" style="min-width: 120px; border-radius: 15px;">
+              <small class="d-block mb-1">Total Projects</small>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="fs-3 fw-bold">3</span>
+                <i class="bi bi-journal-text"></i>
+              </div>
+            </div>
+            <div class="stat-card p-3 bg-white bg-opacity-10 text-center" style="min-width: 120px; border-radius: 15px;">
+              <small class="d-block mb-1">Total Issues</small>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="fs-3 fw-bold">12</span>
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+            </div>
+            <div class="stat-card p-3 bg-white bg-opacity-10 text-center" style="min-width: 120px; border-radius: 15px;">
+              <small class="d-block mb-1">Open Issues</small>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="fs-3 fw-bold">8</span>
+                <i class="bi bi-hourglass-top"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Issues Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+      <h4 class="fw-bold mb-0">Recent Issues</h4>
+      <div class="position-relative" style="max-width: 300px; width: 100%;">
+        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+        <input type="text" class="form-control ps-5 py-2 border-0 shadow-sm" placeholder="Search Issue ID" style="border-radius: 10px;">
+      </div>
+    </div>
+
+    <!-- Issues List -->
+    <div class="card border-0 shadow-sm p-3" style="border-radius: 20px;">
+      <!-- Desktop View Table -->
+      <div class="table-responsive d-none d-md-block">
+        <table class="table table-hover align-middle mb-0">
+          <tbody class="border-0">
+            @for (issue of issues; track $index; let i = $index) {
+              <tr [class.bg-light]="i % 2 === 0" class="border-0">
+                <td class="border-0 py-3 ps-4 fw-medium">{{ issue.id }}</td>
+                <td class="border-0 py-3 text-muted">{{ issue.date }}</td>
+                <td class="border-0 py-3">
+                  <span class="badge px-3 py-2 rounded-pill" [ngClass]="issue.statusClass">{{ issue.status }}</span>
+                </td>
+                <td class="border-0 py-3 text-end pe-4">
+                  <button class="btn btn-primary btn-sm px-4" style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile View List -->
+      <div class="d-md-none">
+        @for (issue of issues; track $index) {
+          <div class="card border-0 mb-3 p-3 bg-light" style="border-radius: 15px;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-bold fs-5">{{ issue.id }}</span>
+              <span class="text-muted small">{{ issue.date }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge px-3 py-2 rounded-pill" [ngClass]="issue.statusClass">{{ issue.status }}</span>
+              <button class="btn btn-primary btn-sm px-4" style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,9 @@ import { Dashboard } from './components/dashboard/dashboard';
 import { Signin } from './components/signin/signin';
 import { Signup } from './components/signup/signup';
 import { Profile } from './components/profile/profile';
+import { Projects } from './components/projects/projects';
+import { ProjectForm } from './components/project-form/project-form';
+import { ProjectDetail } from './project-detail/project-detail';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'signin', pathMatch: 'full' },
@@ -15,6 +18,10 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', component: Dashboard },
             { path: 'profile', component: Profile },
+            { path: 'projects', component: Projects },
+            { path: 'projects/new', component: ProjectForm },
+            { path: 'projects/edit/:id', component: ProjectForm },
+            { path: 'projects/:id', component: ProjectDetail },
         ],
     },
 ];

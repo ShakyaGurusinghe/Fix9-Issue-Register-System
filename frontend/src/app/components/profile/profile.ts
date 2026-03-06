@@ -28,7 +28,7 @@ export class Profile {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.user.profile_photo = e.target.result;
-        this.updateProfile();
+        this.cdr.detectChanges(); // update preview immediately
       };
       reader.readAsDataURL(file);
     }

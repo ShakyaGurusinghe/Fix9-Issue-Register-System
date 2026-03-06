@@ -1,0 +1,62 @@
+<div class="d-flex vh-100 overflow-hidden">
+
+  <div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+    <!-- Mobile Header -->
+    <div class="d-lg-none mb-4 d-flex justify-content-between align-items-center">
+      <button class="btn btn-white shadow-sm">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+      <h4 class="mb-0 fw-bold">{{ isEditMode ? 'Edit Project' : 'Create Project' }}</h4>
+      <div style="width: 40px;"></div>
+    </div>
+
+    <div class="container-fluid py-4">
+      <div class="card border-0 shadow-sm p-4 p-lg-5 mx-auto" style="max-width: 1000px; border-radius: 20px;">
+        <form (ngSubmit)="onSubmit()" class="row g-4">
+          <div class="col-md-7">
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Project Name</label>
+              <input type="text" class="form-control p-3 bg-light border-0" name="name" [(ngModel)]="project.name" placeholder="Enter project name" required>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Description</label>
+              <textarea class="form-control p-3 bg-light border-0" name="description" [(ngModel)]="project.description" rows="6" placeholder="Enter project description" required></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold d-block">Image Upload</label>
+              <label for="imageUpload" class="btn btn-light px-4 py-2 border cursor-pointer" style="border-radius: 8px;">
+                {{ project.image ? 'Change Image' : 'Choose File' }}
+                <input type="file" id="imageUpload" class="d-none" (change)="onFileSelected($event)" accept="image/*">
+              </label>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <label class="form-label fw-semibold">Preview Image</label>
+            <div class="preview-container bg-light d-flex align-items-center justify-content-center overflow-hidden" style="height: 300px; border-radius: 15px; border: 2px dashed #dee2e6;">
+              @if (project.image) {
+                <img [src]="project.image" class="w-100 h-100 object-fit-cover" alt="Preview">
+              } @else {
+                <div class="text-center text-muted p-4">
+                  <i class="bi bi-image fs-1 d-block mb-2"></i>
+                  <span>Preview Image</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="col-12 mt-5">
+            <div class="d-flex gap-3 justify-content-center">
+              <button type="button" routerLink="/projects" class="btn btn-light px-5 py-3 fw-bold" style="border-radius: 10px; min-width: 150px;">Cancel</button>
+              <button type="submit" class="btn btn-primary px-5 py-3 fw-bold" style="background-color: #2196F3; border: none; border-radius: 10px; min-width: 150px;">
+                {{ isEditMode ? 'Save Details' : 'Create Project' }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
