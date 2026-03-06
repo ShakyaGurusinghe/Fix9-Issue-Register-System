@@ -1,0 +1,89 @@
+<div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+  <div class="container-fluid py-4">
+    <div class="card border-0 shadow-sm p-4 p-lg-5 mx-auto" style="max-width: 900px; border-radius: 20px;">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold mb-0">{{ isEditMode ? 'Edit Issue' : 'Open New Issue' }}</h4>
+        <button [routerLink]="['/issues']" class="btn btn-link text-muted p-0">
+          <i class="bi bi-x-lg fs-5"></i>
+        </button>
+      </div>
+
+      <form [formGroup]="issueForm" (ngSubmit)="onSubmit()">
+        <div class="row g-4">
+
+          <!-- Title -->
+          <div class="col-md-7">
+            <label class="form-label fw-semibold">Title</label>
+            <input type="text" formControlName="title"
+              class="form-control p-3 bg-light border-0"
+              style="border-radius: 10px;"
+              placeholder="Enter issue title">
+          </div>
+
+          <!-- Project -->
+          <div class="col-md-5">
+            <label class="form-label fw-semibold">Project</label>
+            <select formControlName="project_id"
+              class="form-select p-3 bg-light border-0"
+              style="border-radius: 10px;">
+              <option value="">Select Project</option>
+              @for (project of projects; track project.id) {
+                <option [value]="project.id">{{ project.name }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Description -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea formControlName="description" rows="6"
+              class="form-control p-3 bg-light border-0"
+              style="border-radius: 10px; resize: none;"
+              placeholder="Describe the issue in detail..."></textarea>
+          </div>
+
+          <!-- Priority -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Priority</label>
+            <select formControlName="priority"
+              class="form-select p-3 bg-light border-0"
+              style="border-radius: 10px;">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Status</label>
+            <select formControlName="status"
+              class="form-select p-3 bg-light border-0"
+              style="border-radius: 10px;">
+              <option value="Open">Open</option>
+              <option value="InProgress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+
+          <!-- Actions -->
+          <div class="col-12 d-flex gap-3 justify-content-end pt-3 border-top">
+            <button type="button" [routerLink]="['/issues']"
+              class="btn btn-light px-5 py-3 fw-bold"
+              style="border-radius: 10px;">Cancel</button>
+            <button type="submit"
+              [disabled]="issueForm.invalid || isSubmitting"
+              class="btn btn-primary px-5 py-3 fw-bold"
+              style="background-color: #2196F3; border: none; border-radius: 10px;">
+              {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Open Issue') }}
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,148 @@
-<p>issues works!</p>
+<div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+
+  <!-- Banner -->
+  <div class="card border-0 mb-4 overflow-hidden position-relative" style="border-radius: 20px; height: 200px;">
+    <img src="https://betterbug-storage.s3.amazonaws.com/Top_10_Bug_Tracking_Tools_to_Look_for_in_2024_78be53dd17.jpg" class="w-100 h-100 object-fit-cover" alt="Banner">
+    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-between px-5"
+      style="background: rgba(0,0,0,0.35);">
+      <!-- <h2 class="text-white fw-bold mb-0">Issues</h2> -->
+      <button [routerLink]="['/issues/new']"
+        class="btn btn-primary px-4 py-2 fw-bold d-flex align-items-center gap-2"
+        style="background-color: #2196F3; border: none; border-radius: 10px;">
+        <i class="bi bi-plus-lg"></i>
+        <span>Open New Issue</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Search -->
+  <div class="d-flex justify-content-between align-items-center mb-4 gap-3">
+    <h4 class="fw-bold mb-0">All Issues</h4>
+    <div class="position-relative" style="max-width: 300px; width: 100%;">
+      <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+      <input type="text" [(ngModel)]="searchQuery"
+        class="form-control ps-5 py-2 border-0 shadow-sm" placeholder="Search Issue ID or Title"
+        style="border-radius: 10px;">
+    </div>
+  </div>
+
+  <!-- Issues Table (Desktop) -->
+  <div class="card border-0 shadow-sm p-3 d-none d-md-block" style="border-radius: 20px;">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
+        <thead class="table-light">
+          <tr>
+            <th class="border-0 ps-4 py-3 text-muted small fw-semibold" style="width: 60px;">ID</th>
+            <th class="border-0 py-3 text-muted small fw-semibold" style="width: 28%;">Title</th>
+            <th class="border-0 py-3 text-muted small fw-semibold" style="width: 15%;">Project</th>
+            <th class="border-0 py-3 text-muted small fw-semibold" style="width: 110px;">Date</th>
+            <th class="border-0 py-3 text-muted small fw-semibold" style="width: 90px;">Priority</th>
+            <th class="border-0 py-3 text-muted small fw-semibold" style="width: 90px;">Status</th>
+            <th class="border-0 py-3 text-muted small fw-semibold text-end pe-4" style="width: 130px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (issue of filteredIssues; track issue.id) {
+            <tr class="border-0">
+              <td class="border-0 py-3 ps-4 fw-medium text-muted small">#{{ issue.id.toString().padStart(4, '0') }}</td>
+              <td class="border-0 py-3 fw-medium text-truncate" [title]="issue.title">{{ issue.title }}</td>
+              <td class="border-0 py-3 text-muted small text-truncate" [title]="issue.project_name || ''">{{ issue.project_name || '—' }}</td>
+              <td class="border-0 py-3 text-muted small">{{ issue.created_at | date:'MMM d, y' }}</td>
+              <td class="border-0 py-3">
+                <span class="small fw-semibold" [ngClass]="{
+                  'text-danger': issue.priority === 'High',
+                  'text-warning': issue.priority === 'Medium',
+                  'text-info': issue.priority === 'Low'
+                }">
+                  <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i>{{ issue.priority }}
+                </span>
+              </td>
+              <td class="border-0 py-3">
+                <span class="badge px-3 py-2 rounded-pill" [ngClass]="getStatusClass(issue.status)">
+                  {{ issue.status }}
+                </span>
+              </td>
+              <td class="border-0 py-3 text-end pe-4">
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                  <button [routerLink]="['/issues', issue.id]"
+                    class="btn btn-primary btn-sm px-3"
+                    style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+                  <button [routerLink]="['/issues/edit', issue.id]" (click)="$event.stopPropagation()"
+                    class="btn btn-link text-primary p-1">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button (click)="confirmDelete(issue)" class="btn btn-link text-danger p-1">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="text-center py-5 text-muted border-0">
+                <i class="bi bi-inbox display-4 d-block mb-2"></i>
+                No issues found.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Issues Cards (Mobile) -->
+  <div class="d-md-none d-flex flex-column gap-3">
+    @for (issue of filteredIssues; track issue.id) {
+      <div class="card border-0 shadow-sm p-3" style="border-radius: 15px;">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <span class="text-muted small">#{{ issue.id.toString().padStart(4, '0') }}</span>
+            <h6 class="fw-bold mb-0">{{ issue.title }}</h6>
+          </div>
+          <span class="badge px-2 py-1 rounded-pill" [ngClass]="getStatusClass(issue.status)">{{ issue.status }}</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+          <span class="text-muted small">{{ issue.created_at | date:'MMM d, y' }}</span>
+          <div class="d-flex gap-2">
+            <button [routerLink]="['/issues/edit', issue.id]" class="btn btn-link text-primary p-1">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button (click)="confirmDelete(issue)" class="btn btn-link text-danger p-1">
+              <i class="bi bi-trash"></i>
+            </button>
+            <button [routerLink]="['/issues', issue.id]"
+              class="btn btn-primary btn-sm px-3"
+              style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-inbox display-4 d-block mb-2"></i>
+        No issues found.
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Delete Modal -->
+@if (showDeleteModal) {
+  <div class="modal-backdrop fade show"></div>
+  <div class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+        <div class="modal-body p-4 text-center">
+          <div class="text-danger mb-3">
+            <i class="bi bi-exclamation-triangle fs-1"></i>
+          </div>
+          <h5 class="fw-bold mb-2">Delete this issue?</h5>
+          <p class="text-muted mb-4">This action cannot be undone.</p>
+          <div class="d-flex gap-3 justify-content-center">
+            <button class="btn btn-light px-4 py-2 fw-bold" (click)="showDeleteModal = false" style="border-radius: 10px;">Cancel</button>
+            <button class="btn btn-danger px-4 py-2 fw-bold" (click)="deleteIssue()" style="border-radius: 10px;">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
