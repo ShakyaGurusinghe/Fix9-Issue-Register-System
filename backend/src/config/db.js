@@ -46,6 +46,22 @@ async function bootstrap() {
         FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     `);
+    await adminConn.query(`
+      CREATE TABLE IF NOT EXISTS issues (
+        id          INT           NOT NULL AUTO_INCREMENT,
+        userid      INT           NOT NULL,
+        project_id  INT           NOT NULL,
+        title       VARCHAR(255)  NOT NULL,
+        description TEXT          DEFAULT NULL,
+        priority    ENUM('Low','Medium','High')                    NOT NULL DEFAULT 'Medium',
+        status      ENUM('Open','InProgress','Resolved','Closed')  NOT NULL DEFAULT 'Open',
+        created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        FOREIGN KEY (userid)     REFERENCES users(userid)    ON DELETE CASCADE,
+        FOREIGN KEY (project_id) REFERENCES projects(id)     ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+    `);
     console.log(`✅  Database '${DB_NAME}' ready`);
   } finally {
     await adminConn.end();

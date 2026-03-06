@@ -1,6 +1,23 @@
 const pool = require('../config/db');
 
-// ─── GET /api/projects ────────────────────────────────────────────────────────
+// ─── GET /api/projects/:id/issues ─────────────────────────────────────────────
+const getProjectIssues = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, title, description, status, priority, created_at
+       FROM issues
+       WHERE project_id = ? AND userid = ?
+       ORDER BY created_at DESC`,
+      [req.params.id, req.user.userid]
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error('getProjectIssues error:', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+
 const getProjects = async (req, res) => {
   try {
     const [rows] = await pool.query(
@@ -110,4 +127,4 @@ const deleteProject = async (req, res) => {
   }
 };
 
-module.exports = { getProjects, getProject, createProject, updateProject, deleteProject };
+module.exports = { getProjects, getProject, createProject, updateProject, deleteProject, getProjectIssues };

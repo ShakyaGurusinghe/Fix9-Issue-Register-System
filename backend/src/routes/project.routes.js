@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { verifyToken } = require('../middleware/auth');
-const { getProjects, getProject, createProject, updateProject, deleteProject } = require('../controllers/projectController');
+const { getProjects, getProject, createProject, updateProject, deleteProject, getProjectIssues } = require('../controllers/projectController');
 
 const router = Router();
 
@@ -9,6 +9,9 @@ router.use(verifyToken);
 
 // GET    /api/projects
 router.get('/', getProjects);
+
+// GET    /api/projects/:id/issues  (must be before /:id)
+router.get('/:id/issues', getProjectIssues);
 
 // GET    /api/projects/:id
 router.get('/:id', getProject);
