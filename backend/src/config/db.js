@@ -33,6 +33,19 @@ async function bootstrap() {
         UNIQUE KEY uq_email (email)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
     `);
+    await adminConn.query(`
+      CREATE TABLE IF NOT EXISTS projects (
+        id          INT           NOT NULL AUTO_INCREMENT,
+        userid      INT           NOT NULL,
+        name        VARCHAR(200)  NOT NULL,
+        description TEXT          DEFAULT NULL,
+        image       LONGTEXT      DEFAULT NULL,
+        created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+    `);
     console.log(`✅  Database '${DB_NAME}' ready`);
   } finally {
     await adminConn.end();

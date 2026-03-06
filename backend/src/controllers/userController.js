@@ -19,9 +19,9 @@ const getProfile = async (req, res) => {
 
 // ─── PUT /api/user/profile ────────────────────────────────────────────────────
 const updateProfile = async (req, res) => {
-  const { name, profile_photo } = req.body;
+  const { name, image } = req.body;
 
-  if (!name && !profile_photo) {
+  if (!name && image === undefined) {
     return res.status(400).json({ error: 'Nothing to update.' });
   }
 
@@ -33,9 +33,9 @@ const updateProfile = async (req, res) => {
       fields.push('name = ?');
       values.push(name.trim());
     }
-    if (profile_photo !== undefined) {
+    if (image !== undefined) {
       fields.push('image = ?');
-      values.push(profile_photo);
+      values.push(image);
     }
 
     values.push(req.user.userid);
