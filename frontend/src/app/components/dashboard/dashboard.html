@@ -1,0 +1,128 @@
+<div class="d-flex vh-100 overflow-hidden">
+
+  <!-- Main Content -->
+  <div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+    <!-- Mobile Header -->
+    <div class="d-lg-none mb-4 d-flex justify-content-between align-items-center">
+      <button class="btn btn-white shadow-sm">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+      <h4 class="mb-0 fw-bold">Dashboard</h4>
+      <div style="width: 40px;"></div>
+    </div>
+
+    <!-- Welcome Banner -->
+    <div class="card border-0 mb-4 p-4 text-white position-relative overflow-hidden" style="background-color: #178ca4; border-radius: 20px;">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h2 class="fw-bold mb-3">Welcome to Fix9 !</h2>
+        </div>
+        <div class="col-md-6 mt-4 mt-md-0">
+          <div class="d-flex flex-wrap gap-3 justify-content-md-end">
+            <div class="stat-card p-3 bg-white bg-opacity-10 text-center" style="min-width: 120px; border-radius: 15px;">
+              <small class="d-block mb-1">Total Projects</small>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="fs-3 fw-bold">{{ totalProjects }}</span>
+                <i class="bi bi-journal-text"></i>
+              </div>
+            </div>
+            <div class="stat-card p-3 bg-white bg-opacity-10 text-center" style="min-width: 120px; border-radius: 15px;">
+              <small class="d-block mb-1">Total Issues</small>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="fs-3 fw-bold">{{ totalIssues }}</span>
+                <i class="bi bi-hourglass-split"></i>
+              </div>
+            </div>
+            <div class="stat-card p-3 bg-white bg-opacity-10 text-center" style="min-width: 120px; border-radius: 15px;">
+              <small class="d-block mb-1">Open Issues</small>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="fs-3 fw-bold">{{ openIssues }}</span>
+                <i class="bi bi-hourglass-top"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Issues Section -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+      <h4 class="fw-bold mb-0">Recent Issues</h4>
+      <a routerLink="/issues" class="btn btn-link text-decoration-none text-primary fw-semibold p-0">
+        View All <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    <!-- Issues List -->
+    <div class="card border-0 shadow-sm p-3" style="border-radius: 20px;">
+
+      @if (recentIssues.length === 0) {
+        <div class="text-center py-5 text-muted">
+          <i class="bi bi-inbox display-4 d-block mb-2"></i>
+          <p class="mb-0">No issues yet. <a routerLink="/issues/new">Open your first issue</a></p>
+        </div>
+      }
+
+      <!-- Desktop View Table -->
+      <div class="table-responsive d-none d-md-block">
+        <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
+          <colgroup>
+            <col style="width: 60px;">
+            <col style="width: 30%;">
+            <col style="width: 15%;">
+            <col style="width: 110px;">
+            <col style="width: 90px;">
+            <col style="width: 110px;">
+          </colgroup>
+          <thead class="table-light">
+            <tr>
+              <th class="border-0 ps-4 py-3 text-muted small fw-semibold">ID</th>
+              <th class="border-0 py-3 text-muted small fw-semibold">Title</th>
+              <th class="border-0 py-3 text-muted small fw-semibold">Project</th>
+              <th class="border-0 py-3 text-muted small fw-semibold">Date</th>
+              <th class="border-0 py-3 text-muted small fw-semibold">Status</th>
+              <th class="border-0 py-3 text-muted small fw-semibold text-end pe-4">Action</th>
+            </tr>
+          </thead>
+          <tbody class="border-0">
+            @for (issue of recentIssues; track $index; let i = $index) {
+              <tr [class.bg-light]="i % 2 === 0" class="border-0">
+                <td class="border-0 py-3 ps-4 fw-medium text-muted small">#{{ issue.id.toString().padStart(4, '0') }}</td>
+                <td class="border-0 py-3 fw-medium text-truncate" [title]="issue.title">{{ issue.title }}</td>
+                <td class="border-0 py-3 text-muted small text-truncate" [title]="issue.project_name || ''">{{ issue.project_name || '—' }}</td>
+                <td class="border-0 py-3 text-muted small">{{ issue.created_at | date:'MMM d, y' }}</td>
+                <td class="border-0 py-3">
+                  <span class="badge px-3 py-2 rounded-pill" [ngClass]="getStatusClass(issue.status)">{{ issue.status }}</span>
+                </td>
+                <td class="border-0 py-3 text-end pe-4">
+                  <button [routerLink]="['/issues', issue.id]"
+                    class="btn btn-primary btn-sm px-4"
+                    style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile View List -->
+      <div class="d-md-none">
+        @for (issue of recentIssues; track $index) {
+          <div class="card border-0 mb-3 p-3 bg-light" style="border-radius: 15px;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-bold">#{{ issue.id.toString().padStart(4, '0') }}</span>
+              <span class="text-muted small">{{ issue.created_at | date:'MMM d, y' }}</span>
+            </div>
+            <p class="fw-medium mb-2 text-truncate">{{ issue.title }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge px-3 py-2 rounded-pill" [ngClass]="getStatusClass(issue.status)">{{ issue.status }}</span>
+              <button [routerLink]="['/issues', issue.id]"
+                class="btn btn-primary btn-sm px-4"
+                style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

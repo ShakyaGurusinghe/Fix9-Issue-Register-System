@@ -1,0 +1,87 @@
+<div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+  <div class="container-fluid py-4">
+
+    @if (issue) {
+      <!-- Back + Title -->
+      <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <button [routerLink]="['/issues']" class="btn btn-light rounded-circle p-2">
+            <i class="bi bi-arrow-left"></i>
+          </button>
+          <h3 class="fw-bold mb-0">{{ issue.title }}</h3>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+          <button [routerLink]="['/issues/edit', issue.id]"
+            class="btn btn-light px-4 fw-bold" style="border-radius: 10px;">
+            <i class="bi bi-pencil me-1"></i> Edit Issue
+          </button>
+          <span class="badge px-3 py-2 rounded-pill fs-6" [ngClass]="getStatusClass(issue.status)">
+            {{ issue.status }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Details Card -->
+      <div class="card border-0 shadow-sm p-4 p-lg-5" style="border-radius: 20px;">
+
+        <!-- Issue Meta -->
+        <div class="row g-4 pb-4 mb-4 border-bottom">
+          <div class="col-md-4">
+            <p class="text-muted small fw-semibold text-uppercase mb-1">Project</p>
+            <p class="fw-bold mb-0">{{ issue.project_name || '— No Project —' }}</p>
+          </div>
+          <div class="col-md-4">
+            <p class="text-muted small fw-semibold text-uppercase mb-1">Priority</p>
+            <p class="fw-bold mb-0" [ngClass]="getPriorityClass(issue.priority)">
+              <i class="bi bi-circle-fill me-1" style="font-size: 10px;"></i>{{ issue.priority }}
+            </p>
+          </div>
+          <div class="col-md-4">
+            <p class="text-muted small fw-semibold text-uppercase mb-1">Created On</p>
+            <p class="fw-bold mb-0">{{ issue.created_at | date:'MMMM d, y' }}</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <p class="text-muted small fw-semibold text-uppercase mb-3">Description</p>
+          <p class="text-muted" style="white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem;">
+            {{ issue.description }}
+          </p>
+        </div>
+
+        <!-- Footer Meta -->
+        <div class="d-flex flex-wrap gap-4 pt-4 border-top">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+              style="width:40px; height:40px;">
+              <i class="bi bi-hash text-muted"></i>
+            </div>
+            <div>
+              <p class="text-muted small fw-semibold text-uppercase mb-0">Issue ID</p>
+              <p class="fw-semibold mb-0">#{{ issue.id.toString().padStart(4, '0') }}</p>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center"
+              style="width:40px; height:40px;">
+              <i class="bi bi-clock text-muted"></i>
+            </div>
+            <div>
+              <p class="text-muted small fw-semibold text-uppercase mb-0">Time</p>
+              <p class="fw-semibold mb-0">{{ issue.created_at | date:'shortTime' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    } @else {
+      <!-- Loading -->
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-hourglass-split fs-1 d-block mb-3"></i>
+        <p>Loading issue details...</p>
+      </div>
+    }
+
+  </div>
+</div>

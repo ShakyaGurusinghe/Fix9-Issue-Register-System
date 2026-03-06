@@ -1,0 +1,16 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background-color: #f0f2f5 !important;
+}
+
+.preview-container img {
+    transition: transform 0.3s;
+}
+
+.preview-container:hover img {
+    transform: scale(1.05);
+}

@@ -1,0 +1,9 @@
+.leading-relaxed {
+    line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+    .card img {
+        height: 250px !important;
+    }
+}

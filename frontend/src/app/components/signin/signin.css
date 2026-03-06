@@ -1,0 +1,19 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background-color: #f8f9fa !important;
+}
+
+@media (max-width: 768px) {
+    .card {
+        margin: 15px;
+        border-radius: 15px !important;
+    }
+
+    .p-5 {
+        padding: 2rem !important;
+    }
+}
