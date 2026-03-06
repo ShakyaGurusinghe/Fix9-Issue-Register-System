@@ -1,0 +1,22 @@
+.stat-card {
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(33, 150, 243, 0.05) !important;
+}
+
+.badge {
+    font-weight: 500;
+    min-width: 100px;
+}
+
+@media (max-width: 768px) {
+    .p-lg-4 {
+        padding: 1rem !important;
+    }
+}

@@ -1,0 +1,153 @@
+<div class="d-flex vh-100 overflow-hidden">
+  <div class="flex-grow-1 overflow-auto bg-light p-3 p-lg-4">
+
+    <!-- Mobile Header -->
+    <div class="d-lg-none mb-4 d-flex justify-content-between align-items-center">
+      <button class="btn btn-white shadow-sm">
+        <i class="bi bi-list fs-3"></i>
+      </button>
+      <h4 class="mb-0 fw-bold">Project Details</h4>
+      <div style="width: 40px;"></div>
+    </div>
+
+    @if (project) {
+      <div class="container-fluid py-2">
+
+        <!-- Project Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <h2 class="fw-bold mb-0">{{ project.name }}</h2>
+          <div class="d-flex gap-2">
+            <button [routerLink]="['/issues/new']"
+              class="btn btn-primary px-4 py-2 d-flex align-items-center gap-2"
+              style="background-color: #2196F3; border: none; border-radius: 10px;">
+              <i class="bi bi-plus-lg"></i> Open Issue
+            </button>
+            <button [routerLink]="['/projects/edit', project.id]"
+              class="btn btn-light px-4 py-2" style="border-radius: 10px;">
+              <i class="bi bi-pencil me-1"></i> Edit
+            </button>
+            <button [routerLink]="['/projects']"
+              class="btn btn-light px-4 py-2" style="border-radius: 10px;">
+              <i class="bi bi-arrow-left me-1"></i> Back
+            </button>
+          </div>
+        </div>
+
+        <!-- Project Image -->
+        <div class="card border-0 shadow-sm overflow-hidden mb-4" style="border-radius: 20px;">
+          <img [src]="project.image || ('https://picsum.photos/seed/' + project.id + '/1200/500')"
+            class="w-100 object-fit-cover" style="height: 340px;" alt="Project">
+        </div>
+
+        <!-- Project Description -->
+        @if (project.description) {
+          <div class="card border-0 shadow-sm p-4 p-lg-5 mb-4" style="border-radius: 20px;">
+            <h5 class="fw-bold mb-3">About this project</h5>
+            <p class="text-muted fs-6 mb-0" style="white-space: pre-wrap; line-height: 1.8;">{{ project.description }}</p>
+          </div>
+        }
+
+        <!-- ─── Issues Table ──────────────────────────────────────────────── -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold mb-0">Issues
+            <span class="badge bg-secondary-subtle text-secondary ms-2 fs-6 fw-normal">{{ issues.length }}</span>
+          </h4>
+          <button [routerLink]="['/issues/new']"
+            class="btn btn-outline-primary btn-sm"
+            style="border-radius: 8px;">
+            <i class="bi bi-plus-lg me-1"></i>Open New Issue
+          </button>
+        </div>
+
+        <div class="card border-0 shadow-sm p-3" style="border-radius: 20px;">
+
+          @if (isLoadingIssues) {
+            <div class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm me-2"></div> Loading issues...
+            </div>
+          } @else if (issues.length === 0) {
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-check2-circle display-4 d-block mb-2 text-success"></i>
+              <p class="mb-1 fw-semibold">No issues for this project yet</p>
+              <small><a [routerLink]="['/issues/new']">Open the first issue</a></small>
+            </div>
+          } @else {
+            <!-- Desktop table -->
+            <div class="table-responsive d-none d-md-block">
+              <table class="table table-hover align-middle mb-0" style="table-layout: fixed;">
+                <colgroup>
+                  <col style="width: 60px;">
+                  <col style="width: 35%;">
+                  <col style="width: 110px;">
+                  <col style="width: 95px;">
+                  <col style="width: 95px;">
+                  <col style="width: 100px;">
+                </colgroup>
+                <thead class="table-light">
+                  <tr>
+                    <th class="border-0 ps-3 py-3 text-muted small fw-semibold">ID</th>
+                    <th class="border-0 py-3 text-muted small fw-semibold">Title</th>
+                    <th class="border-0 py-3 text-muted small fw-semibold">Date</th>
+                    <th class="border-0 py-3 text-muted small fw-semibold">Priority</th>
+                    <th class="border-0 py-3 text-muted small fw-semibold">Status</th>
+                    <th class="border-0 py-3 text-muted small fw-semibold text-end pe-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (issue of issues; track issue.id; let i = $index) {
+                    <tr [class.bg-light]="i % 2 === 0" class="border-0">
+                      <td class="border-0 py-3 ps-3 text-muted small">#{{ issue.id.toString().padStart(4, '0') }}</td>
+                      <td class="border-0 py-3 fw-medium text-truncate" [title]="issue.title">{{ issue.title }}</td>
+                      <td class="border-0 py-3 text-muted small">{{ issue.created_at | date:'MMM d, y' }}</td>
+                      <td class="border-0 py-3 small fw-semibold" [ngClass]="getPriorityClass(issue.priority)">
+                        <i class="bi bi-circle-fill me-1" style="font-size: 8px;"></i>{{ issue.priority }}
+                      </td>
+                      <td class="border-0 py-3">
+                        <span class="badge px-2 py-1 rounded-pill" [ngClass]="getStatusClass(issue.status)">{{ issue.status }}</span>
+                      </td>
+                      <td class="border-0 py-3 text-end pe-3">
+                        <button [routerLink]="['/issues', issue.id]"
+                          class="btn btn-primary btn-sm px-3"
+                          style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mobile cards -->
+            <div class="d-md-none d-flex flex-column gap-3">
+              @for (issue of issues; track issue.id) {
+                <div class="card border-0 bg-light p-3" style="border-radius: 12px;">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="overflow-hidden me-2">
+                      <span class="text-muted small">#{{ issue.id.toString().padStart(4, '0') }}</span>
+                      <p class="fw-semibold mb-0 text-truncate">{{ issue.title }}</p>
+                    </div>
+                    <span class="badge px-2 py-1 rounded-pill flex-shrink-0" [ngClass]="getStatusClass(issue.status)">{{ issue.status }}</span>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                    <span class="text-muted small">{{ issue.created_at | date:'MMM d, y' }}</span>
+                    <button [routerLink]="['/issues', issue.id]"
+                      class="btn btn-primary btn-sm px-3"
+                      style="background-color: #2196F3; border: none; border-radius: 8px;">View</button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+        <!-- ─── End Issues Table ───────────────────────────────────────────── -->
+
+      </div>
+    } @else {
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-hourglass-split fs-1 d-block mb-3"></i>
+        <p>Loading project...</p>
+      </div>
+    }
+
+  </div>
+</div>

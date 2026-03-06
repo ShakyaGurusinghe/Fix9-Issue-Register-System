@@ -2,8 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors    = require('cors');
 
-const authRoutes = require('./src/routes/auth.routes');
-const userRoutes = require('./src/routes/user.routes');
+const authRoutes    = require('./src/routes/auth.routes');
+const userRoutes    = require('./src/routes/user.routes');
+const projectRoutes = require('./src/routes/project.routes');
+const issueRoutes   = require('./src/routes/issue.routes');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -18,8 +20,10 @@ app.use(express.json({ limit: '10mb' }));  // 10 MB to allow base64 images
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
-app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api/auth',     authRoutes);
+app.use('/api/user',     userRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/issues',   issueRoutes);
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
