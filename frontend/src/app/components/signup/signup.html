@@ -19,7 +19,7 @@
           <div class="mb-3">
             <label class="form-label fw-semibold">Password</label>
             <div class="input-group">
-              <input [type]="showPassword ? 'text' : 'password'" class="form-control p-3 border-end-0" name="password" [(ngModel)]="userData.password" placeholder="Enter Your Password" required>
+              <input [type]="showPassword ? 'text' : 'password'" class="form-control p-3 border-end-0" name="password" [(ngModel)]="userData.password" placeholder="Enter Your Password" autocomplete="new-password" required>
               <span class="input-group-text bg-white border-start-0 cursor-pointer" (click)="showPassword = !showPassword">
                 <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
               </span>
@@ -28,14 +28,19 @@
           
           <div class="mb-4">
             <label class="form-label fw-semibold">Confirm Password</label>
-            <input type="password" class="form-control p-3" name="confirmPassword" [(ngModel)]="userData.confirmPassword" placeholder="Re - Enter Password" required>
+            <input type="password" class="form-control p-3" name="confirmPassword" [(ngModel)]="userData.confirmPassword" placeholder="Re - Enter Password" autocomplete="new-password" required>
           </div>
+
 
           @if (error) {
             <div class="alert alert-danger py-2 mb-3">{{ error }}</div>
           }
 
-          <button type="submit" class="btn btn-primary w-100 p-3 fw-bold mb-3" style="background-color: #2196F3; border: none; border-radius: 10px;">Sign Up</button>
+          @if (successMessage) {
+            <div class="alert alert-success py-2 mb-3">{{ successMessage }}</div>
+          }
+
+          <button type="submit" class="btn btn-primary w-100 p-3 fw-bold mb-3"  style="background-color: #2196F3; border: none; border-radius: 10px;">Sign Up</button>
           
           <p class="text-center text-muted">Already Have An Account? <a routerLink="/signin" class="text-decoration-none fw-bold" style="color: #2196F3;">Sign In</a></p>
         </form>
