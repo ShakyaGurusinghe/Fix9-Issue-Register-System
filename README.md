@@ -6,7 +6,8 @@ A comprehensive system to track and manage issues related to different projects,
 
 The user interface and user experience design for this project were created in Figma. 
 
-[👉 View the sample Figma Design File Here](https://www.figma.com/file/sample-link/Fix9-Issue-Register-System) *(Replace this link with your actual Figma file URL)*
+[👉 View the Figma Design File Here](https://www.figma.com/design/dX43f7M0SvvYOh1H7ex4uY/Issue_Tracking?node-id=0-1&t=hgGqOXYK3f4hSSzw-1) 
+
 
 ## 🚀 Tech Stack
 
